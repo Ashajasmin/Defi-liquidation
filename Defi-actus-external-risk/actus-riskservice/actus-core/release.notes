@@ -1,0 +1,9 @@
+Branch rf2dev
+--------------
+This version of actus-core: (1) is built and tested with Java version jdk17 and built
+with maven 3.6.3; (2) it is modified to support an External Risk Service via the RiskFactorAPI 2.0
+implmented in the corresponding rf2dev branched of actus-webapp and actus-risk-service.  It was 
+developed by Francis Parr in Sep 2024
+
+The start point for the creating this branch was branch V101jdk17. Since there are updates in 
+V102jdk17 ( also based ) with bugs fixed merging with this version may be desirable before release 

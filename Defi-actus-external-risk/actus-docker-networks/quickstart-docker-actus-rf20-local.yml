@@ -1,0 +1,50 @@
+# =============================================================================
+# LOCAL BUILD docker-compose for Hybrid Treasury Multi-Contract Portfolio
+# Both actus-service (8083) and actus-riskservice (8082) built from source
+# =============================================================================
+# Usage:
+#   1. Run build-and-run.bat (handles actus-core copy + docker build + compose up)
+#   OR manually:
+#   2. Copy actus-riskservice/actus-core -> actus-service/actus-core
+#   3. docker build --no-cache -t actus-risksrv3-custom:latest ../actus-riskservice
+#   4. docker build --no-cache -t actus-server-rf20-custom:latest ../actus-service
+#   5. docker compose -f quickstart-docker-actus-rf20-local.yml up -d
+# =============================================================================
+
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    command: mongod --bind_ip_all
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - actus-network
+
+  actus-riskserver-ce:
+    image: actus-risksrv3-custom:latest
+    ports:
+    #  - "8082:8082"
+    - "127.0.0.1:8082:8082" 
+    depends_on:
+      - mongodb
+    networks:
+      - actus-network
+
+  actus-server-rf20:
+    # KEY CHANGE: use locally built image instead of Docker Hub pre-built
+    # This picks up STF_PP_rf2 and STF_AFD_rf2 null-safe feeRate fix
+    image: actus-server-rf20-custom:latest
+    ports:
+    #  - "8083:8083"
+    - "127.0.0.1:8083:8083"    
+    networks:
+      - actus-network
+
+volumes:
+  mongo_data:
+
+networks:
+  actus-network:
+    driver: bridge
