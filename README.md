@@ -76,7 +76,7 @@ Add the `generalRisk` server entry:
 }
 ```
 
-Replace `<path-to-your-clone>` with your actual clone location. For example:
+Replace `<path-to-your-clone>` with your actual clone location.
 
 
 ### Step 4 — Restart Claude Desktop
@@ -125,39 +125,102 @@ to get response from local host use these json files:
 
 ## OPTION B:
 if localhost doesnot work, check your hosted files in system 32 and also try 127.0.0.1
+"<path-to-your-clone>\Defi-liquidation\Defi-interface\Frontend\DEMO-Defi-liquidation\hosted\defi-liquidation-collateral"
 
 
 ## Demo Prompts
 
 Upload a DeFi liquidation collection JSON to Claude, then run these prompts:
 
-### Prompt 1 — Run All Scenarios
+
+Demo Prompts:
+---
+
+## PROMPT 1 — Module 1: Four Granularity Simulations
+
+**Upload:** All 4 JSON files from `defi-liquidation-collateral-3`
+
 ```
-Run all 4 What-If scenarios from this file on the ACTUS engine. 
-For each scenario show me: ETH price trajectory, DeFi borrowing rate, 
-LTV over time, buffer interventions, and final deleveraging percentage. 
-Use localhost.
+Run the ETH liquidation simulation for all 4 attached files against 
+localhost (port 8082 risk, 8083 simulation). For each granularity — 
+daily (30-day), hourly (1-week), minutely (1-hour), secondly (1-minute) 
+— show me:
+
+1. ETH/USD market risk factor chart across time
+2. DeFi borrowing rate market risk factor across time
+3. Collateral LTV over time with 75% warning and 82.5% liquidation 
+   threshold lines
+4. Full event table: time, event type, ETH price, ETH collateral, 
+   buffer collateral, ETH collateral value, LTV, nominal, 
+   total portfolio value, intervention
 ```
 
-### Prompt 2 — Compare Buffered vs. Unbuffered
+---
+
+## PROMPT 2 — Module 2: Strategy Engine
+
+**Upload:** `ETH-Liq-LTV-TPP-COM-COL-BUF-SELL-1W-100Y1W-hourly-FIXED-V5.json`
+
 ```
-Compare S3 (no buffer, -50% crash) vs S4 (with buffer, same crash). 
-Show me why S4's buffer didn't deploy even though it had capacity. 
-Explain the falling knife protection mechanism from the ACTUS results.
+Run the ETH collateral strategy simulation for both daily (monthly) 
+and hourly (weekly) configurations in the attached file against 
+localhost (port 8082 risk, 8083 simulation). Show me:
+
+1. ETH/USD and DeFi borrowing rate on a dual-axis chart across 
+   the full simulation period
+2. Collateral LTV trajectory over time — mark every buffer 
+   intervention with exact payoff amount and notional after
+3. Full event table: time, event type, ETH price, ETH collateral, 
+   buffer ETH, collateral value, LTV, nominal, total portfolio 
+   value, intervention flag
+4. Raw JSON response from the ACTUS server
 ```
 
-### Prompt 3 — Visualize the Stress Scenario
+---
+
+## PROMPT 3 — Module 3: Run All 4 Scenarios
+
+**Upload:** Same `ETH-Liq-LTV-TPP-COM-COL-BUF-SELL-1W-100Y1W-hourly-FIXED-V5.json`
+
 ```
-For S2 (Stress scenario), show me exactly when each buffer intervention 
-fired — the time, payoff amount, and notional after each intervention. 
-Plot the LTV crossing the 75% threshold and the buffer deployments.
+Run all 4 what-if scenarios from the attached file against localhost 
+(port 8082 risk, 8083 simulation):
+
+S1 — Base Case: 0% ETH drop, 65% starting LTV, 15% invoice buffer  
+S2 — Stress: -10% ETH drop, 70% starting LTV, 15% invoice buffer  
+S3 — Severe Crash: -20% ETH drop, 75% starting LTV, 0% buffer  
+S4 — Buffered Recovery: -20% ETH drop, 75% starting LTV, 25% buffer  
+
+Show me:
+1. ETH/USD price trajectory across the simulation period
+2. DeFi borrowing rate trajectory across all scenarios
+3. Collateral LTV over time — all 4 scenarios overlaid on one chart 
+   with 75% warning and 82.5% liquidation threshold lines
+4. Scenario summary table: initial LTV, final notional, total prepaid, 
+   deleveraging percentage, buffer intervention count
 ```
 
-### Prompt 4 — Rate Analysis
+---
+
+## PROMPT 4 — Module 3: Deep Dive Analysis
+
+**No new upload — continue same session**
+
 ```
-Show me the DeFi borrowing rate trajectory across all scenarios. 
-When does the rate peak and what is the peak value? How does the 
-rate impact prepayment behavior?
+Using the 4 scenario results just computed:
+
+1. For S2 (Stress): show every buffer intervention that fired — 
+   exact time, payoff amount, notional after, cumulative 
+   deleveraging percentage at each step
+
+2. For S3 vs S4: both face the same -20% ETH crash and 75% starting 
+   LTV — explain why S4's buffer did not deploy despite having 25% 
+   buffer capacity. What is the falling knife protection mechanism 
+   and what threshold triggered it?
+
+3. DeFi borrowing rate: when does the rate peak across all scenarios, 
+   what is the exact peak value, and how does the rising rate interact 
+   with prepayment behavior?
 ```
 
 ---
