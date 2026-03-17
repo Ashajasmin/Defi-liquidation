@@ -79,11 +79,11 @@ Add the `generalRisk` server entry:
 Replace `<path-to-your-clone>` with your actual clone location.
 
 
-### Step 4 — Restart Claude Desktop
+### Step 5 — Restart Claude Desktop
 
 Close and reopen Claude Desktop. The `generalRisk` MCP server will start automatically.
 
-### Step 5 — Verify the Tools Are Available
+### Step 6 — Verify the Tools Are Available
 
 In Claude Desktop, look for the MCP tools icon (hammer/wrench). You should see the server named **`generalRisk`** with **7 tools**:
 
@@ -99,7 +99,7 @@ In Claude Desktop, look for the MCP tools icon (hammer/wrench). You should see t
 
 When Claude calls any tool for the first time, you will see a permission prompt — click **Allow** (or **Allow for this chat**) to proceed.
 
-### Step 6 — ACTUS Engine (Local Docker — Optional)
+### Step 7 — ACTUS Engine (Local Docker — Optional)
 
 For local execution, you need the ACTUS Docker containers running.
 
@@ -121,19 +121,18 @@ If Docker is not running, the MCP server automatically falls back to the AWS-hos
 ---
 ## OPTION A: 
 to get response from local host use these json files: 
-"<path-to-your-clone>\Defi-liquidation\Defi-interface\Frontend\DEMO-Defi-liquidation\local\defi-liquidation-collateral
+[local/defi-liquidation-collateral](https://github.com/Ashajasmin/Defi-liquidation/tree/main/Defi-interface/Frontend/DEMO-Defi-liquidation/local/defi-liquidation-collateral/defi-liquidation-demo)
+
 
 ## OPTION B:
 if localhost doesnot work, check your hosted files in system 32 and also try 127.0.0.1
-"<path-to-your-clone>\Defi-liquidation\Defi-interface\Frontend\DEMO-Defi-liquidation\hosted\defi-liquidation-collateral"
+[hosted/defi-liquidation-collateral](https://github.com/Ashajasmin/Defi-liquidation/tree/main/Defi-interface/Frontend/DEMO-Defi-liquidation/hosted/defi-liquidation-collateral)
 
 
 ## Demo Prompts
 
 Upload a DeFi liquidation collection JSON to Claude, then run these prompts:
 
-
-Demo Prompts:
 ---
 
 ## PROMPT 1 — Module 1: Four Granularity Simulations
